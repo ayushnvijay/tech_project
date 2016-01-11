@@ -9,8 +9,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.ayushnvijay.android.technicalproject99co.LocationPicker">
 
-    <TextView
+    <AutoCompleteTextView
+        android:id="@+id/auto_complete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:ems="10"
+
+        android:text="Enter your place"/>
+
 </RelativeLayout>

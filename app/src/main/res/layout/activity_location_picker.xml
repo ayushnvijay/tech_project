@@ -16,7 +16,9 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:singleLine="true"
-        android:hint="Enter your place"/>
+        android:hint="Enter your place"
+        android:inputType="textAutoCorrect"
+        android:imeOptions="actionDone"/>
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

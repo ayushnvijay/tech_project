@@ -81,9 +81,8 @@ public class LocationPicker extends AppCompatActivity {
         object = new IntentObject();
         setContentView(R.layout.activity_location_picker);
         AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.auto_complete);
-            GooglePlacesAdapter placesAdapter = new GooglePlacesAdapter(this, R.layout.list_item);
-            autoCompleteTextView.setAdapter(placesAdapter);
-
+        GooglePlacesAdapter placesAdapter = new GooglePlacesAdapter(this, R.layout.list_item);
+        autoCompleteTextView.setAdapter(placesAdapter);
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {

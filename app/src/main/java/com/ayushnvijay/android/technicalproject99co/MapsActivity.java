@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -50,14 +49,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        mMap.setBuildingsEnabled(true);
         FoursquareParsing foursquareParsing = new FoursquareParsing();
         foursquareParsing.execute(categoryId, longitude + "", latitude + "");
 
@@ -94,39 +91,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         @Override
         protected void onPostExecute(String result) {
             try {
-                pointsArrayList.clear();
+                mMap.clear();
                 JSONObject jsonObject = new JSONObject(result);
                 if(jsonObject.has("response")){
                     if(jsonObject.getJSONObject("response").has("venues")){
                         JSONArray jsonArray = jsonObject.getJSONObject("response").getJSONArray("venues");
                         for(int i = 0; i < jsonArray.length(); i++) {
+                            String name = jsonArray.getJSONObject(i).getJSONArray("categories").getJSONObject(0).getString("name");
                             if(jsonArray.getJSONObject(i).has("location")){
                                 JSONObject location = jsonArray.getJSONObject(i).getJSONObject("location");
                                 Points temp = new Points(0,0);
                                 if(location.has("lat")){
                                     temp.lat = location.getDouble("lat");
-                                    Log.i("lat", temp.lat + "");
+                                    //Log.i("lat", temp.lat + "");
                                 }
                                 if(location.has("lng")){
                                     temp.lng = location.getDouble("lng");
-                                    Log.i("lng",temp.lng+"");
+                                    //Log.i("lng",temp.lng+"");
                                 }
-                                pointsArrayList.add(temp);
+                                LatLng marker = new LatLng(temp.lat, temp.lng);
+                                mMap.addMarker(new MarkerOptions().position(marker).title(name));
+                                mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
                             }
                         }
                     }
+                    mMap.moveCamera(CameraUpdateFactory.zoomBy(6));
                 }
-                mMap.clear();
-                int counter = 0;
-                mMap.setBuildingsEnabled(true);
-                for(int i = 0; i < pointsArrayList.size(); i++){
-                    Points point = pointsArrayList.get(i);
-                    LatLng marker = new LatLng(point.lat, point.lng);
-                    counter++;
-                    mMap.addMarker(new MarkerOptions().position(marker).title("" + counter));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
-                }
-                mMap.moveCamera(CameraUpdateFactory.zoomBy(6));
             }
             //Note: Points arraylist is not useful here, we can directly add markers while parsing json.
 

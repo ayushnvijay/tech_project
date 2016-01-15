@@ -119,7 +119,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
             //Note: Points arraylist is not useful here, we can directly add markers while parsing json.
-
             catch (Exception e){
 
             }
